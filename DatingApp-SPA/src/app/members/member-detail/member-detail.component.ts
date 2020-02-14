@@ -10,8 +10,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./member-detail.component.css']
 })
 export class MemberDetailComponent implements OnInit {
-
   user: User;
+  tmp = 'user';
+
   constructor(
     private userService: UserService,
     private alertify: AlertifyService,
@@ -19,16 +20,18 @@ export class MemberDetailComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.loadUser();
+    this.route.data.subscribe(data => {
+      this.user = data[this.tmp];
+    });
   }
 
-  loadUser() {
-    this.userService.getUser(+this.route.snapshot.params['id'])
-      .subscribe((user: User) => {
-        this.user = user;
-      }, error => {
-        this.alertify.error(error);
-      });
-  }
+  // loadUser() {
+  //   this.userService.getUser(+this.route.snapshot.params['id'])
+  //     .subscribe((user: User) => {
+  //       this.user = user;
+  //     }, error => {
+  //       this.alertify.error(error);
+  //     });
+  // }
 
 }
