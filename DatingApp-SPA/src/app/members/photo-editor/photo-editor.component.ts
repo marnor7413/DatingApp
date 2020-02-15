@@ -35,6 +35,9 @@ export class PhotoEditorComponent implements OnInit {
       autoUpload: false,
       maxFileSize: 10 * 1024 * 1024
     });
+
+    // explicitly state file is not uploaded with credentials, solution to tricky CORS console error report
+    this.uploader.onAfterAddingFile = (file) => {file.withCredentials = false; };
   }
 
 }
