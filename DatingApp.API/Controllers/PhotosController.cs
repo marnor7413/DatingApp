@@ -51,7 +51,7 @@ namespace DatingApp.API.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddPhotoForUser(int userId, 
-            PhotoForCreationDto photoForCreationDto)
+            [FromForm]PhotoForCreationDto photoForCreationDto)
         {
             // check if user id in token is same as 'userId' to add photo to
             if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
