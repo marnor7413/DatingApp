@@ -38,6 +38,20 @@ export class PhotoEditorComponent implements OnInit {
 
     // explicitly state file is not uploaded with credentials, solution to tricky CORS console error report
     this.uploader.onAfterAddingFile = (file) => {file.withCredentials = false; };
+    
+    // make uploaded photos appear in listing immediately after upload is successful
+    this.uploader.onSuccessItem = (itm, response, status, headers) => {
+      if (response) {
+        const res: Photo = JSON.parse(response);
+        const photo = {
+          id: res.id,
+          url: res.url,
+          dateAdded: res.dateAdded,
+          description: res.description,
+          isMain: res.isMain
+        };
+        this.photos.push(photo);
+      }
+    };
   }
-
 }
