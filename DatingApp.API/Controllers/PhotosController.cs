@@ -87,6 +87,16 @@ namespace DatingApp.API.Controllers
             
             userFromRepo.Photos.Add(photo);
             
+            /**
+            When we return a CreatedAtRoute after creating a new photo we need to 
+            provide a location header that is made up of:
+                1. The route name which is GetPhoto
+                2. The route values.  In order to get a photo from the GetPhoto 
+                   endpoint the route is:  /api/users/{userId}/photos/{photoId}.  
+                   The userId and the photoId is what we need to pass as the route 
+                   values to build the location header url of the newly created photo.
+                3.  The resource we are returning - the photo object.
+            **/
             if(await _repo.SaveAll())
             {
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
