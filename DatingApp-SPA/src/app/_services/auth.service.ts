@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { decode } from 'punycode';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,16 @@ baseUrl = environment.apiUrl + 'auth/';
 jwtHelper = new JwtHelperService();
 decodedToken: any;
 currentUser: User;
+photoUrl = new BehaviorSubject<string>('../../assets/user.png');
+currentPhotoUrl = this.photoUrl.asObservable();
+
+
 
 constructor(private http: HttpClient) { }
+
+changeMemberPhoto(photoUrl: string) {
+  this.photoUrl.next(photoUrl);
+}
 
 login(model: any) {
   return this.http.post(this.baseUrl + 'login', model)
@@ -28,7 +37,7 @@ login(model: any) {
             localStorage.setItem('user', JSON.stringify(user.user));
             this.currentUser = user.user;
             this.decodedToken = this.jwtHelper.decodeToken(user.token);
-            console.log(this.decodedToken);
+            this.changeMemberPhoto(this.currentUser.photoUrl);
           }
         })
     );
